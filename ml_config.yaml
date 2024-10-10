@@ -1,0 +1,18 @@
+seed: 2024
+device: cuda:0
+
+data:
+  n_fold: 5
+  name: IMDB_dir_form
+  root: /home2/huangrizhuo/opensource/ia_hgin/data
+  degree_as_tag: true
+
+model:
+  # graphlet_sampling, graph_subtree
+  # hypergraph_rooted, hypergraph_directed_line, hypergraph_subtree, hypergraph_subtree_v, hypergraph_subtree_e, hypergraph_wl_e， hypergraph_subtree_id
+  name: hypergraph_subtree_id
+  normalize: true
+
+hydra:
+  run:
+    dir: cache/${data.name}__${model.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}

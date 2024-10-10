@@ -1,0 +1,23 @@
+device: cuda:5
+data:
+  # name: "EnzymeClass", "ProteinFamily", "StructuralClass_TP", "StructuralClass_CL"
+  name: StructuralClass_CL
+  root: /home/zhangyifan/alive/ia_hgin/data
+  degree_as_tag: true
+  batch_size: 64
+  num_workers: 0
+
+optim:
+  lr: 0.01
+  weight_decay: 5e-4
+  max_epoch: 50
+  batch_size: 64
+
+model:
+  # name: gcn, graphsage, gin, graphsnn, hgnn, hgnnp, hgin, ia_hgin, allsettransformer, unigcn2, unigat, ed_hnn, hypergcn
+  name: ia_hgin
+  hidden_dim: 64
+
+hydra:
+  run:
+    dir: cache/${data.name}__${model.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}
