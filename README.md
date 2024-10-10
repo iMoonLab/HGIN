@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="docs/logo.svg" alt="HGIN" width="50%" height="50%" />
+  <img src="docs/logo.svg" alt="HGIN" width="30%" height="50%" />
 
   &#xa0;
 
