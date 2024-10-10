@@ -38,12 +38,12 @@
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
   <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Author</a>
+  <a href="https://fengyifan.site" target="_blank">Author</a>
 </p>
 
 <br>
 
-This repository contains the source code for the paper "How Powerful are Hypergraph Neural Networks?" published in xxx by [Yifan Feng](https://fengyifan.site/), Rizhuo Huang, Yifan Zhang, Shaoyi Du, Shihui Ying, Zongze Wu, Yue Gao*. This paper is available at [here](xxx).
+This repository contains the source code for the paper "How Powerful are Hypergraph Neural Networks?" by [Yifan Feng](https://fengyifan.site/), Rizhuo Huang, Yifan Zhang, Shaoyi Du, Shihui Ying, Zongze Wu, Yue Gao*. This paper is available at [here](xxx).
 
 ## :dart: About HGIN
 
