@@ -5,8 +5,8 @@ data:
   # name: "IMDB_dir_form", "IMDB_dir_genre", "IMDB_wri_form", "IMDB_wri_genre", "twitter_friend", "steam_player"
   # name: "RHG_3", "RHG_10", "RHG_table", "RHG_pyramid"
   name: IMDB_dir_form #steam_player
-  root: /home/zhangyifan/alive/ia_hgin/data
-  degree_as_tag: true1
+  root: ${hydra:runtime.cwd}/data
+  degree_as_tag: true
   batch_size: 32
   num_workers: 0
 

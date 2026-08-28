@@ -4,7 +4,7 @@ device: cuda:0
 data:
   n_fold: 5
   name: IMDB_dir_form
-  root: /home2/huangrizhuo/opensource/ia_hgin/data
+  root: ${hydra:runtime.cwd}/data
   degree_as_tag: true
 
 model:

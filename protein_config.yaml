@@ -1,8 +1,8 @@
-device: cuda:5
+device: cuda:0
 data:
   # name: "EnzymeClass", "ProteinFamily", "StructuralClass_TP", "StructuralClass_CL"
   name: StructuralClass_CL
-  root: /home/zhangyifan/alive/ia_hgin/data
+  root: ${hydra:runtime.cwd}/data
   degree_as_tag: true
   batch_size: 64
   num_workers: 0

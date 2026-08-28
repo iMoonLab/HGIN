@@ -1,0 +1,10 @@
+# Core dependencies for HGIN / IA-HGIN and the kernel-based methods.
+# Install PyTorch separately to match your platform, e.g.:
+#   CUDA 12.8:  pip install torch --index-url https://download.pytorch.org/whl/cu128
+#   CPU only:   pip install torch
+dhg
+hydra-core
+scikit-learn
+scikit-multilearn
+tqdm
+scipy

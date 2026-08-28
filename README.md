@@ -1,101 +1,99 @@
-<div align="center" id="top"> 
-  <img src="docs/logo.svg" alt="HGIN" width="30%" height="50%" />
+<div align="center" id="top">
 
-  &#xa0;
+<img src="docs/logo.svg" alt="HGIN" width="30%"/>
+
+### *How Powerful are Hypergraph Neural Networks?*
+
+**Yifan Feng · Rizhuo Huang · Yifan Zhang · Shaoyi Du · Shihui Ying · Zongze Wu · Yue Gao\***
+
+<a href="https://www.computer.org/csdl/journal/tp/5555/01/11657965/2j3auScOCuQ"><img alt="IEEE TPAMI 2026" src="https://img.shields.io/badge/IEEE-TPAMI%202026-4F46E5?style=flat-square"></a>
+<a href="https://doi.org/10.1109/TPAMI.2026.3724944"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.1109%2FTPAMI.2026.3724944-2DD4BF?style=flat-square"></a>
+<a href="LICENSE.txt"><img alt="License" src="https://img.shields.io/badge/License-MIT-8B83F6?style=flat-square"></a>
 
 </div>
 
-<h1 align="center">HGIN</h1>
+<br>
 
-<p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/iMoonLab/HGIN?color=56BEB8">
+WL-style kernels and GNNs capture neighborhood connectivity, but miss the higher-order structures that make hypergraphs powerful. This work closes the gap with one kernel and two networks:
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/iMoonLab/HGIN?color=56BEB8">
+- **HG IA Subtree Kernel** — hypergraph WL subtree + **closed-path counts** of varying lengths; distinguishes uniform-regular hypergraphs that WL kernels cannot.
+- **HGIN** — vertex → hyperedge → vertex message passing with MLP aggregation, matching the HG WL subtree kernel's expressive power.
+- **IA-HGIN** — HGIN + a dedicated channel for closed-path distribution features. Strictly stronger.
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/iMoonLab/HGIN?color=56BEB8">
+## Installation
 
-  <img alt="License" src="https://img.shields.io/github/license/iMoonLab/HGIN?color=56BEB8">
+```bash
+git clone https://github.com/iMoonLab/HGIN && cd HGIN
+uv venv --python 3.10 && source .venv/bin/activate   # Windows: .venv/Scripts/activate
+uv pip install torch --index-url https://download.pytorch.org/whl/cu128   # CPU: uv pip install torch
+uv pip install -r requirements.txt
+```
 
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/ia_hgin?color=56BEB8" /> -->
+## Reproduce in one command
 
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/ia_hgin?color=56BEB8" /> -->
+```bash
+bash run_demo.sh      # 6 representative experiments, ~35 min on one GPU
+```
 
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/ia_hgin?color=56BEB8" /> -->
-</p>
+| Experiment | Command | Acc |
+|---|---|---|
+| HG IA Subtree / IMDB-Wri-Form (~15 s) | `python ml_main.py data.name=IMDB_wri_form model.name=hypergraph_subtree_id` | 51.33 |
+| HG IA Subtree / RHG-10 (~3 min) | `python ml_main.py data.name=RHG_10 model.name=hypergraph_subtree_id` | 97.85 |
+| HG IA Subtree / IMDB-Dir-Form (~4 min) | `python ml_main.py data.name=IMDB_dir_form model.name=hypergraph_subtree_id` | 67.42 |
+| HGIN / IMDB-Wri-Form (~2 min) | `python dl_main.py data.name=IMDB_wri_form model.name=hgin` | 51.98 |
+| HGIN / RHG-10 (~13 min) | `python dl_main.py data.name=RHG_10 model.name=hgin` | 97.78 |
+| IA-HGIN / RHG-3 (~11 min) | `python dl_main.py data.name=RHG_3 model.name=ia_hgin` | 99.92 |
 
-<!-- Status -->
+<sub>Results are averaged over 5 seeds; the demo runs a single seed with 5-fold CV, so small deviations are expected.</sub>
 
-<!-- <h4 align="center"> 
-	🚧  Ia_hgin 🚀 Under construction...  🚧
-</h4> 
+<details>
+<summary><b>Full reproduction</b> — all 9 datasets × {kernel, HGIN, IA-HGIN} (Tables III–VI, several hours)</summary>
 
-<hr> -->
+```bash
+bash run_full_sweep.sh
+```
 
-<p align="center">
-  <a href="#dart-about">About</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
-  <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
-  <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
-  <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://fengyifan.site" target="_blank">Author</a>
-</p>
+Single experiments are configured via [Hydra](https://hydra.cc/):
+
+```bash
+python ml_main.py data.name=<dataset> model.name=<kernel>   # kernel-based methods
+python dl_main.py data.name=<dataset> model.name=hgin       # or ia_hgin
+```
+
+`<dataset>`: `RHG_10`, `RHG_3`, `RHG_table`, `RHG_pyramid`, `IMDB_dir_form`, `IMDB_dir_genre`, `IMDB_wri_form`, `IMDB_wri_genre`, `steam_player` · `<kernel>`: `hypergraph_subtree_id`, `hypergraph_subtree(_v|_e)`, `hypergraph_wl_e`, `hypergraph_rooted`, `hypergraph_directed_line`, `graph_subtree`, `graphlet_sampling`
+
+</details>
+
+<details>
+<summary><b>Protein datasets</b> (Table VII) — manual download required</summary>
+
+Download `EnzymeClass.pkl`, `ProteinFamily.pkl`, `StructuralClass_TP.pkl`, `StructuralClass_CL.pkl` into `data/hypergraph/PROTEIN/`:
+
+- Baidu Netdisk: https://pan.baidu.com/s/162T8QhftOgVubQUONe0ufA?pwd=d89r (code: `d89r`)
+
+```bash
+python protein_main.py data.name=EnzymeClass model.name=ia_hgin
+```
+
+</details>
+
+<details>
+<summary><b>Citation</b></summary>
+
+```bibtex
+@article{feng2026how,
+  title   = {How Powerful are Hypergraph Neural Networks?},
+  author  = {Feng, Yifan and Huang, Rizhuo and Zhang, Yifan and Du, Shaoyi and Ying, Shihui and Wu, Zongze and Gao, Yue},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year    = {2026},
+  doi     = {10.1109/TPAMI.2026.3724944}
+}
+```
+
+</details>
 
 <br>
 
-This repository contains the source code for the paper "How Powerful are Hypergraph Neural Networks?" by [Yifan Feng](https://fengyifan.site/), Rizhuo Huang, Yifan Zhang, Shaoyi Du, Shihui Ying, Zongze Wu, Yue Gao*. This paper is available at [here](xxx).
-
-## :dart: About HGIN
-
-Isomorphism recognition is crucial for analyzing complex network structures. Traditional methods like Weisfeiler-Lehman (WL) kernels and various GNNs often overlook higher-order interactions essential for practical applications. Besides, hypergraph WL kernels struggle to distinguish uniform-regular hypergraphs due to their focus on neighborhood connectivity without effectively capturing unique higher-order structures.
-To overcome these issues, we introduce the Hypergraph Identity-Aware Subtree (IA Subtree) Kernel, which distinguishes uniform-regular hypergraphs by considering both neighborhood connectivity and connection density. This kernel detects subtle differences in hypergraph structures via variations in Closed Paths of different lengths.
-Additionally, we develop two Hypergraph Neural Networks: Hypergraph Isomorphism Networks (HGIN) and Identity-Aware Hypergraph Isomorphism Networks (IA-HGIN). These models combine the strengths of the Hypergraph WL subtree kernel with advanced neural architectures, improving classification by integrating features from closed-path distributions.
-We also provide the first comprehensive theoretical comparison of expressive power between kernel-based methods and neural networks, confirming IA-HGIN's superior performance. Experimental results on eight synthetic and eight real hypergraph datasets validate the effectiveness of our methods over existing State-of-the-Art approaches.
-
-## :sparkles: Features 
-
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
-
-## :rocket: Technologies 
-
-The following tools were used in this project:
-
-- [Expo](https://expo.io/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-## :white_check_mark: Requirements 
-
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
-
-## :checkered_flag: Starting 
-
-```bash
-# Clone this project
-$ git clone https://github.com/iMoonLab/HGIN
-
-# Access
-$ cd ia_hgin
-
-# Install dependencies
-$ yarn
-
-# Run the project
-$ yarn start
-
-# The server will initialize in the <http://localhost:3000>
-```
-
-## :memo: License 
-
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.txt) file.
-
-
-Made with :heart: by <a href="https://fengyifan.site" target="_blank">Yifan Feng</a>
-
-&#xa0;
-
-<a href="#top">Back to top</a>
+<div align="center">
+<sub>MIT License · Made with ❤️ by <a href="https://fengyifan.site">Yifan Feng</a> and Rizhuo Huang</sub>
+</div>
